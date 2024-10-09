@@ -415,6 +415,19 @@ head(noaa_clean)</code></pre>
 ##  9 US1NYAB0001 2007-11-09    NA    NA    NA    NA    NA  2007    11     9
 ## 10 US1NYAB0001 2007-11-10    NA    NA    NA    NA    NA  2007    11    10
 ## # ℹ 2,595,166 more rows</code></pre>
+<pre class="r"><code>#To identify the most common snowfall values
+noaa_clean %&gt;%
+  count(snow) %&gt;%
+  arrange(desc(n)) %&gt;%
+  head(5)</code></pre>
+<pre><code>## # A tibble: 5 × 2
+##    snow       n
+##   &lt;int&gt;   &lt;int&gt;
+## 1     0 2008508
+## 2    NA  381221
+## 3    25   31022
+## 4    13   23095
+## 5    51   18274</code></pre>
 <p>Size and Structure: The NOAA dataset contains daily weather data from
 several stations in New York State. The dataset has 2595176 rows and 7
 columns which is over 2.5 million rows and multiple columns such as
@@ -433,8 +446,8 @@ temperatures in tenths of degrees Celsius.</p>
 <p><code>Missing Data</code>: Missing data is prevalent, especially for
 temperature and precipitation measurements. We will explore this
 further.</p>
-<p><strong>Ensure observations in reasonable units</strong>
-<code>tmax</code> and <code>tmin</code> (maximum and minimum
+<p><strong>Ensure observations in reasonable units</strong></p>
+<p><code>tmax</code> and <code>tmin</code> (maximum and minimum
 temperature) are recorded in tenths of degrees Celsius, so dividing by
 10 converts them to standard °C.</p>
 <p><code>prcp</code> (precipitation) is recorded in tenths of
@@ -442,6 +455,9 @@ millimeters, so dividing by 10 converts it to millimeters.</p>
 <p><code>snwd</code> (snow depth) is recorded in millimeters, but since
 snow depth is typically expressed in centimeters, dividing by 10
 converts it to cm.</p>
+<p><strong>Most commonly observed values For Snowfall</strong>: The most
+common snowfall value is 0, which means there is no snow on most
+days.</p>
 
 
 

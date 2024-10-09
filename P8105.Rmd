@@ -23,6 +23,13 @@ noaa_clean <- ny_noaa %>%
   mutate(year = year(date), month = month(date), day = day(date))
 head(noaa_clean)
 print(noaa_clean)
+
+#To identify the most common snowfall values
+noaa_clean %>%
+  count(snow) %>%
+  arrange(desc(n)) %>%
+  head(5)
+
 ```
 Size and Structure: The NOAA dataset contains daily weather data from several stations in New York State. The dataset has `r nrow(ny_noaa)` rows and `r ncol(ny_noaa)` columns which is over 2.5 million rows and multiple columns such as `id`, `date`, `tmax`, `tmin`, `prcp`, `snwd`, and `snow`.
 
@@ -43,8 +50,13 @@ Key Variables:
 `Missing Data`: Missing data is prevalent, especially for temperature and precipitation measurements. We will explore this further.
 
 **Ensure observations in reasonable units**
+
 `tmax` and `tmin` (maximum and minimum temperature) are recorded in tenths of degrees Celsius, so dividing by 10 converts them to standard °C.
 
 `prcp` (precipitation) is recorded in tenths of millimeters, so dividing by 10 converts it to millimeters.
 
 `snwd` (snow depth) is recorded in millimeters, but since snow depth is typically expressed in centimeters, dividing by 10 converts it to cm.
+
+**Most commonly observed values For Snowfall**: The most common snowfall value is 0, which means there is no snow on most days.
+
+
