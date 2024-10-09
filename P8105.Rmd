@@ -1,0 +1,37 @@
+---
+title: "P8105_HW3_JG4890"
+author: "Jiayi Ge"
+date: "2024-10-09"
+output: html_document
+---
+##Problem 1
+Import and clean Dataset
+```{r}
+library(p8105.datasets)
+library(dplyr)
+library(janitor)
+library(lubridate)
+data("ny_noaa")
+noaa_clean <- ny_noaa %>%
+  janitor::clean_names() %>%
+  mutate(
+    prcp = as.numeric(prcp) / 10, 
+    tmax = as.numeric(tmax) / 10, 
+    tmin = as.numeric(tmin) / 10,
+    snwd = as.numeric(snwd) / 10
+  )%>%
+  mutate(year = year(date), month = month(date), day = day(date))
+head(noaa_clean)
+print(noaa_clean)
+```
+Size and Structure: The NOAA dataset contains daily weather data from several stations in New York State. The dataset has `r nrow(ny_noaa)` rows and `r ncol(ny_noaa)` columns which is over 2.5 million rows and multiple columns such as `id`, `date`, `tmax`, `tmin`, `prcp`, `snwd`, and `snow`.
+
+Key Variables:
+
+`id`: Identifies the weather station. Weather station ID.
+`date`: The date of the observation.
+`tmax`, `tmin`: Maximum and minimum temperatures in tenths of degrees Celsius.
+`prcp`: Precipitation in tenths of millimeters.
+`snow`: Snowfall in millimeters.
+`snwd`: Snow depth mm.
+`Missing Data`: Missing data is prevalent, especially for temperature and precipitation measurements. We will explore this further.
