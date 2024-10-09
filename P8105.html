@@ -422,14 +422,26 @@ columns which is over 2.5 million rows and multiple columns such as
 <code>tmin</code>, <code>prcp</code>, <code>snwd</code>, and
 <code>snow</code>.</p>
 <p>Key Variables:</p>
-<p><code>id</code>: Identifies the weather station. Weather station ID.
-<code>date</code>: The date of the observation. <code>tmax</code>,
-<code>tmin</code>: Maximum and minimum temperatures in tenths of degrees
-Celsius. <code>prcp</code>: Precipitation in tenths of millimeters.
-<code>snow</code>: Snowfall in millimeters. <code>snwd</code>: Snow
-depth mm. <code>Missing Data</code>: Missing data is prevalent,
-especially for temperature and precipitation measurements. We will
-explore this further.</p>
+<p><code>id</code>: Identifies the weather station. Weather station
+ID.</p>
+<p><code>date</code>: The date of the observation.</p>
+<p><code>tmax</code>, <code>tmin</code>: Maximum and minimum
+temperatures in tenths of degrees Celsius.</p>
+<p><code>prcp</code>: Precipitation in tenths of millimeters.</p>
+<p><code>snow</code>: Snowfall in millimeters.</p>
+<p><code>snwd</code>: Snow depth mm.</p>
+<p><code>Missing Data</code>: Missing data is prevalent, especially for
+temperature and precipitation measurements. We will explore this
+further.</p>
+<p><strong>Ensure observations in reasonable units</strong>
+<code>tmax</code> and <code>tmin</code> (maximum and minimum
+temperature) are recorded in tenths of degrees Celsius, so dividing by
+10 converts them to standard °C.</p>
+<p><code>prcp</code> (precipitation) is recorded in tenths of
+millimeters, so dividing by 10 converts it to millimeters.</p>
+<p><code>snwd</code> (snow depth) is recorded in millimeters, but since
+snow depth is typically expressed in centimeters, dividing by 10
+converts it to cm.</p>
 
 
 
