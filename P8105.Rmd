@@ -236,5 +236,24 @@ July_2020_bike <- read_csv("./citibike/July 2020 Citi.csv", na = c("NA", ".", ""
 July_2024_bike <- read_csv("./citibike/July 2024 Citi.csv", na = c("NA", ".", "")) %>%
   janitor::clean_names()
 
+citi_bike_data <- bind_rows(Jan_2020_bike, Jan_2024_bike, July_2020_bike, July_2024_bike)
+glimpse(citi_bike_data)
 ```
+The `citi_bike_data` tibble has 99,485 rows and 7 columns between January 2020, July 2020, January 2024, and July 2024. The variables include:
+
+ride_id: Unique identifier for each ride
+
+rideable_type: Type of bike (e.g., electric or classic)
+
+weekdays: Day of the week the ride occurred
+
+duration: Duration of the ride in minutes
+
+start_station_name: Starting station of the ride
+
+end_station_name: Ending station of the ride
+
+member_casual: Indicates whether the rider is a casual user or a Citi Bike member.
+
+
 
