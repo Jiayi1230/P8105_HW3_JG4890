@@ -4,7 +4,7 @@ author: "Jiayi Ge"
 date: "2024-10-09"
 output: github_document
 ---
-##Problem 1
+# Problem 1
 Import and clean Dataset
 ```{r}
 library(p8105.datasets)
@@ -14,22 +14,18 @@ library(lubridate)
 data("ny_noaa")
 noaa_clean <- ny_noaa %>%
   janitor::clean_names() %>%
+#Change the units into a more reasonable ones
   mutate(
     prcp = as.numeric(prcp) / 10, 
     tmax = as.numeric(tmax) / 10, 
     tmin = as.numeric(tmin) / 10,
     snwd = as.numeric(snwd) / 10
   )%>%
+  
+#Create separate variables for year, month, and day
   mutate(year = year(date), month = month(date), day = day(date))
 head(noaa_clean)
 print(noaa_clean)
-
-#To identify the most common snowfall values
-noaa_clean %>%
-  count(snow) %>%
-  arrange(desc(n)) %>%
-  head(5)
-
 ```
 Size and Structure: The NOAA dataset contains daily weather data from several stations in New York State. The dataset has `r nrow(ny_noaa)` rows and `r ncol(ny_noaa)` columns which is over 2.5 million rows and multiple columns such as `id`, `date`, `tmax`, `tmin`, `prcp`, `snwd`, and `snow`.
 
@@ -47,7 +43,7 @@ Key Variables:
 
 `snwd`: Snow depth mm.
 
-`Missing Data`: Missing data is prevalent, especially for temperature and precipitation measurements. We will explore this further.
+`Missing Data`: Missing data is prevalent, especially for temperature and precipitation measurements.
 
 **Ensure observations in reasonable units**
 
@@ -57,8 +53,21 @@ Key Variables:
 
 `snwd` (snow depth) is recorded in millimeters, but since snow depth is typically expressed in centimeters, dividing by 10 converts it to cm.
 
+```{r}
+#To identify the most common snowfall values
+noaa_clean %>%
+  count(snow) %>%
+  arrange(desc(n)) %>%
+  head(5)
+
+```
+
 **Most commonly observed values For Snowfall**: The most common snowfall value is 0, which means there is no snow on most days.
 
+
+
+
+**Plot showing the average max temperature in January and in July in each station across years**
 ```{r}
 library(ggplot2)
 # Summarize average max temperature for January and July
@@ -95,7 +104,7 @@ ggplot(noaa_clean, aes(x = tmin, y = tmax)) +
 ```
 
 
-(ii) The distribution of snowfall values greater than 0 and less than 100 separately by year
+**(ii) The distribution of snowfall values greater than 0 and less than 100 separately by year**
 ```{r}
 snowfall_filtered <- noaa_clean %>%
   filter(snwd > 0 & snwd < 100)
@@ -109,4 +118,17 @@ ggplot(snowfall_filtered, aes(x = factor(year), y = snwd)) +
   scale_x_discrete(breaks = seq(min(snowfall_filtered$year), max(snowfall_filtered$year), by = 5))  # Display every 5 years
 
 ```
+
+# Problem 2
+Import data for problem 2
+```{r}
+library(readr)
+nhanes_accel = 
+  read_csv("./nhanes_accel.csv", na = c("NA", ",", "")) %>%
+  janitor::clean_names()
+nhanes_covar = 
+  read_csv("./nhanes_covar.csv", na = c("NA", ",", ""),skip = 4) %>%
+  janitor::clean_names()
+```
+
 
