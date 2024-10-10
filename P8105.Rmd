@@ -2,7 +2,7 @@
 title: "P8105_HW3_JG4890"
 author: "Jiayi Ge"
 date: "2024-10-09"
-output: html_document
+output: github_document
 ---
 ##Problem 1
 Import and clean Dataset
@@ -61,26 +61,22 @@ Key Variables:
 
 ```{r}
 library(ggplot2)
-# Filter data for January and July, group by year and station, and calculate average tmax
 # Summarize average max temperature for January and July
 jan_jul_summary <- noaa_clean %>%
   filter(month %in% c(1, 7)) %>%
-  group_by(year, month) %>%
+  group_by(year, month,id) %>%
   summarize(avg_tmax = mean(tmax, na.rm = TRUE), .groups = "drop")
 # Convert month to a factor for better plotting
 jan_jul_summary <- jan_jul_summary %>%
   mutate(month = factor(month, labels = c("January", "July")))
 
 # Create a bar plot for average max temperature
-ggplot(jan_jul_summary, aes(x = factor(year), y = avg_tmax, fill = month)) +
-  geom_bar(stat = "identity", position = "dodge") +
+ggplot(jan_jul_summary, aes(x = factor(year), y = avg_tmax)) +
+  geom_point() +
+  facet_grid(. ~ month) +
+  scale_x_discrete(breaks = seq(min(jan_jul_summary$year), max(jan_jul_summary$year), by = 5)) +
   labs(title = "Average Max Temperature in January and July",
        x = "Year",
-       y = "Average Max Temperature (°C)") +
-  scale_fill_manual(values = c("January" = "blue", "July" = "orange")) +
-  theme_minimal()
-
+       y = "Average Max Temperature (°C)") 
 ```
-In January, the average max temperature is generally lower than in July.
-In the year of 1992, 2000, 2009, their Max temp during July is much lower than the others, which is lower than 25.
-
+In January, the average max temperature is generally lower than in July.Meanwhile, the average maximum temperature in July appears to be more stable than the average maximum temperature in January. In the January chart, there are several outliers in both the upper and lower regions of the distribution, and there is more variation overall. In July, some individual outliers were below the overdistribution, but the overall level was stable.
