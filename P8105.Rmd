@@ -255,5 +255,19 @@ end_station_name: Ending station of the ride
 
 member_casual: Indicates whether the rider is a casual user or a Citi Bike member.
 
+**Separating casual riders and Citi Bike members**
+```{r}
+combined_summary <- bind_rows(
+  Jan_2020_bike %>% group_by(member_casual) %>% summarise(total_rides = n()) %>% mutate(year = 2020, month = "January"),
+  Jan_2024_bike %>% group_by(member_casual) %>% summarise(total_rides = n()) %>% mutate(year = 2024, month = "January"),
+  July_2020_bike %>% group_by(member_casual) %>% summarise(total_rides = n()) %>% mutate(year = 2020, month = "July"),
+  July_2024_bike %>% group_by(member_casual) %>% summarise(total_rides = n()) %>% mutate(year = 2024, month = "July")
+)
+print(combined_summary)
+```
+The output shows a summary of Citi Bike rides in January and July for the years 2020 and 2024, separated by rider type (casual and member).
 
+Casual riders: In January 2020, there were 984 rides, while in July 2020, there were 5,637 rides. In January 2024, this increased to 2,108 rides, and in July 2024, there were 10,894 rides.
+
+Members: The rides taken by members are significantly higher, with 11,436 in January 2020, 15,411 in July 2020, and increasing to 16,753 in January 2024 and 36,262 in July 2024.
 
