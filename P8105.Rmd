@@ -271,3 +271,15 @@ Casual riders: In January 2020, there were 984 rides, while in July 2020, there 
 
 Members: The rides taken by members are significantly higher, with 11,436 in January 2020, 15,411 in July 2020, and increasing to 16,753 in January 2024 and 36,262 in July 2024.
 
+**Population stations for july 2024**
+```{r}
+# Filter for July 2024 and summarize the top 5 starting stations
+popular_stations_july <- July_2024_bike %>%
+  group_by(start_station_name) %>%
+  summarise(total_rides = n(), .groups = "drop") %>%
+  arrange(desc(total_rides)) %>%
+  slice_head(n = 5)
+
+print(popular_stations_july)
+```
+A table shows the 5 most popular starting stations for July 2024 including the number of rides originating from these stations. The most popular starting station is Pier 61 at Chelsea Piers and the the number of rides originating from these stations is 163.
