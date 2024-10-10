@@ -128,7 +128,48 @@ nhanes_accel =
   janitor::clean_names()
 nhanes_covar = 
   read_csv("./nhanes_covar.csv", na = c("NA", ",", ""),skip = 4) %>%
-  janitor::clean_names()
+  janitor::clean_names()%>%
+  mutate(
+    sex = case_when(
+      sex == 1 ~ "male", 
+      sex == 2 ~ "female"
+    ),
+    sex = factor(sex),
+    education = case_when(
+      education == 1 ~ "less than high school", 
+      education == 2 ~ "high school equivalent", 
+      education == 3 ~ "more than high school"
+    ),
+    education = factor(education)
+  )
+#Exclude participants less than 21 years of age, and those with missing demographic data
+nhanes_mims = 
+  left_join(nhanes_accel, nhanes_covar)%>%
+  filter(!is.na(education) & age >= 21) 
+
 ```
+
+
+** Table for Men and Women by Education**
+```{r}
+nhanes_mims%>%
+  group_by(education, sex)%>%
+  janitor::tabyl(sex, education)
+```
+From this table, we can see that the largest number of participants had an education level beyond high school, and the number of participants who did not complete high school was about the same as the number who completed high school.
+
+```{r}
+# Plot age distribution by gender and education using your grouped data
+
+ggplot(nhanes_mims, aes(x = age, fill = sex)) +
+  geom_histogram(position = "dodge", bins = 30) + 
+  facet_grid( ~ education) +
+  labs(title = "Age Distribution by Gender and Education",
+       x = "Age", y = "Count") +
+  scale_fill_manual(values = c( "pink", "blue")) +
+
+  theme_minimal()
+```
+From this graph, we can see that, on the whole, those aged between 20 and 40 have the highest count on more than high school. Also, the age distribution and sex distribution of those who did not complete high school or completed an equivalent high school, as seen in the first two sections, appear to be relatively consistent.
 
 
