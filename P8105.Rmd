@@ -172,7 +172,27 @@ ggplot(nhanes_mims, aes(x = age, fill = sex)) +
 ```
 From this graph, we can see that, on the whole, those aged between 20 and 40 have the highest count on more than high school. Also, the age distribution and sex distribution of those who did not complete high school or completed an equivalent high school, as seen in the first two sections, appear to be relatively consistent.
 
-**Summarize total MIMS activity by participant**
+**Plot of Total Activity by Age and Education Level**
+```{r}
+
+nhanes_mims %>%
+  mutate(total_mims = rowSums(across(min1:min1440), na.rm = TRUE)) %>%  # Calculate total MIMS
+  ggplot(aes(x = age, y = total_mims, color = sex)) + 
+  geom_point(alpha = 0.6) +  # Scatter points
+  geom_smooth(method = "lm", se = FALSE) +  # Add a linear trend line 
+  facet_wrap(~ education) +  # Separate panels for education levels
+  labs(
+    title = "Total Activity by Age and Education Level",
+    color = "Sex",
+    x = "Age",
+    y = "Total MIMS"
+  ) +
+  theme_minimal()  
+
+```
+As shown in the figure, we can see that overall, regardless of gender and education, the total amount of activity decreases with age. The highest activity in all three graphs is the leftmost point. At the same time, both the "high school equivalent education" and "higher than high school education" groups had higher activity.
+
+**Scatter Plot of Total MIMS by Age Across Sex and Education**
 ```{r}
 library(tidyr)
 
@@ -191,7 +211,7 @@ ggplot(nhanes_data_df, aes(x = age, y = total_activity, color = sex)) +
   geom_smooth(se = FALSE) +  # Add a trend line
   facet_grid(. ~ education) +  # Separate panels for education levels
   labs(
-    title = "Total Activity by Age and Education Level",
+    title = "Total MIMS by Age and Education Level",
     x = "Age",
     y = "Total Activity (MIMS)",
     caption = "NHANES data of participants aged 21 and over"
@@ -199,3 +219,4 @@ ggplot(nhanes_data_df, aes(x = age, y = total_activity, color = sex)) +
   theme_minimal()  
 ```
 From our picture, we can see that the regression line trend is basically similar for men and women at the three different levels of education. It was also found that in the "high school equivalent" and "above high school" groups, women of all ages were more active overall than men. In the "below high school" group, only female participants under the age of 50 had higher total activity than men. At the same time, there are some outliers in all three graphs.
+
