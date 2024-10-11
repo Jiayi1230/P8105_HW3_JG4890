@@ -318,17 +318,20 @@ ggplot(citi_bike_data, aes(x = weekdays, y = duration, fill = factor(year))) +
 ```{r}
 citi_bike_2024 <- citi_bike_data %>%
   filter(year == 2024)
-# Plot ride duration distribution by month, membership status, and bike type
+
+# Histogram of ride duration by bike type, filled by membership status, faceted by month
 ggplot(citi_bike_2024, aes(x = duration, fill = member_casual)) +
   geom_histogram(bins = 30, position = "dodge", alpha = 0.6) +
-  facet_wrap(~ month + rideable_type) +  # Separate plots by month and bike type
+  facet_wrap(rideable_type ~ month) +  
   scale_x_continuous(limits = c(0, 100)) +
-  scale_y_continuous(limits = c(0, 200)) +
-  labs(title = "Ride Duration Distribution by Month, Membership Status, and Bike Type in 2024",
+  labs(title = "Ride Duration Distribution by Bike Type, Month, and Membership Status in 2024",
        x = "Ride Duration (mins)", 
        y = "Count",
        fill = "Membership Status") +
   theme_minimal()
 
-```
 
+
+
+```
+As we can see from the figure, during the July, there are more people ride bike and especially most of member will choose classic bike for the duration less than 25 mins. The reason should be the weather is much better in July than in January. Also, during January, the casual people will more like to ride a electric bike. In general, most people ride for a duration of less than 50 minutes, but there are some exceptions. Whether it's January or July, more people ride electric bikes.
