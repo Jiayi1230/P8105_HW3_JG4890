@@ -225,16 +225,20 @@ From our picture, we can see that the regression line trend is basically similar
 Import and clean all the data
 ```{r}
 Jan_2020_bike <- read_csv("./citibike/Jan 2020 Citi.csv", na = c("NA", ".", "")) %>%
-  janitor::clean_names()
+  janitor::clean_names()%>%
+  mutate(year = 2020, month = "January")
 
 Jan_2024_bike <- read_csv("./citibike/Jan 2024 Citi.csv", na = c("NA", ".", "")) %>%
-  janitor::clean_names()
+  janitor::clean_names()%>%
+  mutate(year = 2024, month = "January")
 
 July_2020_bike <- read_csv("./citibike/July 2020 Citi.csv", na = c("NA", ".", "")) %>%
-  janitor::clean_names()
+  janitor::clean_names()%>%
+  mutate(year = 2020, month = "July")
 
 July_2024_bike <- read_csv("./citibike/July 2024 Citi.csv", na = c("NA", ".", "")) %>%
-  janitor::clean_names()
+  janitor::clean_names()%>%
+  mutate(year = 2024, month = "July")
 
 citi_bike_data <- bind_rows(Jan_2020_bike, Jan_2024_bike, July_2020_bike, July_2024_bike)
 glimpse(citi_bike_data)
@@ -258,10 +262,10 @@ member_casual: Indicates whether the rider is a casual user or a Citi Bike membe
 **Separating casual riders and Citi Bike members**
 ```{r}
 combined_summary <- bind_rows(
-  Jan_2020_bike %>% group_by(member_casual) %>% summarise(total_rides = n()) %>% mutate(year = 2020, month = "January"),
-  Jan_2024_bike %>% group_by(member_casual) %>% summarise(total_rides = n()) %>% mutate(year = 2024, month = "January"),
-  July_2020_bike %>% group_by(member_casual) %>% summarise(total_rides = n()) %>% mutate(year = 2020, month = "July"),
-  July_2024_bike %>% group_by(member_casual) %>% summarise(total_rides = n()) %>% mutate(year = 2024, month = "July")
+  Jan_2020_bike %>% group_by(member_casual) %>% summarise(total_rides = n())%>% mutate(year = 2020, month = "January"),
+  Jan_2024_bike %>% group_by(member_casual) %>% summarise(total_rides = n())%>% mutate(year = 2024, month = "January"),
+  July_2020_bike %>% group_by(member_casual) %>% summarise(total_rides = n())%>% mutate(year = 2020, month = "July"),
+  July_2024_bike %>% group_by(member_casual) %>% summarise(total_rides = n())%>% mutate(year = 2024, month = "July")
 )
 print(combined_summary)
 ```
@@ -280,6 +284,32 @@ popular_stations_july <- July_2024_bike %>%
   arrange(desc(total_rides)) %>%
   slice_head(n = 5)
 
+# Display the top 5 starting stations for July 2024
 print(popular_stations_july)
 ```
 A table shows the 5 most popular starting stations for July 2024 including the number of rides originating from these stations. The most popular starting station is Pier 61 at Chelsea Piers and the the number of rides originating from these stations is 163.
+
+
+**Create a plot for ride duration by weekday, year and month**
+```{r}
+# Reorder weekdays into a factor for proper plotting
+citi_bike_data <- citi_bike_data %>%
+  mutate(
+    weekdays = factor(weekdays, 
+                      levels = c("Monday", "Tuesday", "Wednesday", 
+                                 "Thursday", "Friday", "Saturday", "Sunday"))
+  )
+
+# Create the plot
+ggplot(citi_bike_data, aes(x = weekdays, y = duration, fill = factor(year))) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +  # Boxplots with side-by-side comparison
+  facet_grid(month ~ year) +  # Separate plots by month and year
+  scale_y_continuous(limits = c(0, 100)) +  # Limit Y-axis to 0-100 mins
+  labs(title = "Ride Duration by Weekday, Year, and Month",
+       x = "Day of the Week", 
+       y = "Ride Duration (mins)", 
+       fill = "Year") +
+  theme_minimal()
+
+```
+
