@@ -310,7 +310,7 @@ popular_stations_july <- July_2024_bike %>%
 # Display the top 5 starting stations for July 2024
 print(popular_stations_july)
 ```
-A table shows the 5 most popular starting stations for July 2024 including the number of rides originating from these stations. The most popular starting station is Pier 61 at Chelsea Piers and the the number of rides originating from these stations is 163.
+A table shows the 5 most popular starting stations for July 2024 including the number of rides originating from these stations. The most popular starting station is Pier 61 at Chelsea Piers and the the number of rides originating from these stations is 163. This may explain the high foot traffic or demand for cycling at these stations.
 
 
 **Create a plot for ride duration by weekday, year and month**
